@@ -1,16 +1,11 @@
 package com.example.firstcompouse.ui.theme
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
 
 val BrandColorDark =  Color(0xFF660EC8) //use for on pressed
 val BrandColorDefault =  Color(0xFF9A41FE) //use for button
@@ -49,3 +44,30 @@ val Gradient02 = Brush.linearGradient(
     start = Offset.Zero,
     end = Offset.Infinite
 )
+
+data class ButtonColorStateList(
+    val containerColor: Color = BrandColorDefault,
+    val borderColor: Color = Color.Transparent,
+    val contentColor: Color = NeutralSecondaryBG,
+    val rippleContainerColor: Color = BrandColorDark,
+    val rippleBorderColor: Color = Color.Transparent,
+    val rippleContentColor: Color = NeutralSecondaryBG,
+    val disabledContainerColor: Color = BrandColorDefault.copy(alpha = 0.5f),
+    val disabledBorderColor: Color = Color.Transparent,
+    val disabledContentColor: Color = NeutralSecondaryBG,
+) {
+    @Composable
+    internal fun containerColor(enabled: Boolean): State<Color> {
+        return rememberUpdatedState(if (enabled) containerColor else disabledContainerColor)
+    }
+
+    @Composable
+    internal fun contentColor(enabled: Boolean): State<Color> {
+        return rememberUpdatedState(if (enabled) contentColor else disabledContentColor)
+    }
+
+    @Composable
+    internal fun borderColor(enabled: Boolean): State<Color> {
+        return rememberUpdatedState(if (enabled) borderColor else disabledBorderColor)
+    }
+}
