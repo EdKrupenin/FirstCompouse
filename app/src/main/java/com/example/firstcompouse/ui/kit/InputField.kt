@@ -1,4 +1,4 @@
-package com.example.firstcompouse
+package com.example.firstcompouse.ui.kit
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -40,7 +40,6 @@ fun SearchBar(
         modifier = modifier
             .fillMaxWidth()
             .background(color = backgroundColor, shape = RoundedCornerShape(4.dp))
-            .padding(horizontal = 6.dp, vertical = 8.dp)
     ) {
         Icon(
             imageVector = Icons.Default.Search,

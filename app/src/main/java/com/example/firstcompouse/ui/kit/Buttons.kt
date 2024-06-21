@@ -1,5 +1,4 @@
-package com.example.firstcompouse
-
+package com.example.firstcompouse.ui.kit
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
@@ -7,7 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,8 +35,10 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.wear.compose.material3.ripple
 import com.example.firstcompouse.ui.theme.BrandColorDark
 import com.example.firstcompouse.ui.theme.BrandColorDefault
+import com.example.firstcompouse.ui.theme.BrandColorLight
 import com.example.firstcompouse.ui.theme.ButtonColorStateList
 
 enum class ButtonType {
@@ -68,20 +69,21 @@ fun CustomButton(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable RowScope.() -> Unit,
 ) {
-    val isPressed by interactionSource.collectIsPressedAsState()
+    val isHovered by interactionSource.collectIsHoveredAsState()
 
     val containerColor by animateColorAsState(
-        targetValue = if (isPressed) colors.rippleContainerColor else colors.containerColor(enabled).value,
+        targetValue = if (isHovered) colors.rippleContainerColor else colors.containerColor(enabled).value,
         label = "buttonContainerColorAnimation"
     )
     val contentColor by animateColorAsState(
-        targetValue = if (isPressed) colors.rippleContentColor else colors.contentColor(enabled).value,
+        targetValue = if (isHovered) colors.rippleContentColor else colors.contentColor(enabled).value,
         label = "buttonContentColorAnimation"
     )
     val borderColor by animateColorAsState(
-        targetValue = if (isPressed) colors.rippleBorderColor else colors.borderColor(enabled).value,
+        targetValue = if (isHovered) colors.rippleBorderColor else colors.borderColor(enabled).value,
         label = "buttonBorderColorAnimation"
     )
+
     Box(
         modifier = modifier
             .defaultMinSize(
@@ -89,6 +91,14 @@ fun CustomButton(
                 minWidth = ButtonDefaults.MinWidth,
             )
             .clip(shape)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = ripple(
+                    color = BrandColorLight
+                ),
+                onClick = onClick,
+                enabled = enabled,
+            )
             .padding(PaddingValues(8.dp))
             .background(containerColor, shape)
             .let { if (border) it.border(BorderStroke(1.5.dp, borderColor), shape) else it },
@@ -100,12 +110,6 @@ fun CustomButton(
                     Modifier
                         .defaultMinSize(
                             minWidth = ButtonDefaults.MinWidth, minHeight = ButtonDefaults.MinHeight
-                        )
-                        .clickable(
-                            interactionSource = interactionSource,
-                            indication = null,
-                            onClick = onClick,
-                            enabled = enabled,
                         )
                         .padding(contentPadding),
                     horizontalArrangement = Arrangement.Center,
@@ -202,7 +206,6 @@ fun ButtonGrid() {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         modifier = Modifier
-            .padding(8.dp)
             .fillMaxSize()
     ) {
         items(allButtons) { (state, type) ->

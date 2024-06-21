@@ -20,6 +20,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.firstcompouse.ui.kit.ButtonGrid
+import com.example.firstcompouse.ui.kit.ChipRow
+import com.example.firstcompouse.ui.kit.PreviewCommunity
+import com.example.firstcompouse.ui.kit.PreviewEvents
+import com.example.firstcompouse.ui.kit.SearchBar
 import com.example.firstcompouse.ui.theme.FirstCompouseTheme
 
 class MainActivity : ComponentActivity() {
@@ -43,13 +48,13 @@ fun MainScreen(modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
             Box(modifier = Modifier
                 .fillMaxWidth()
-                .height(280.dp)) {
+                .height(180.dp)) {
                 ButtonGrid()
             }
         }
@@ -63,9 +68,21 @@ fun MainScreen(modifier: Modifier = Modifier) {
             AvatarRow()
         }
         item {
-            SearchBar(
-                modifier = Modifier.padding(8.dp),
-            )
+            SearchBar()
+        }
+        item {
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .height(380.dp)) {
+                PreviewEvents()
+            }
+        }
+        item {
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .height(380.dp)) {
+                PreviewCommunity()
+            }
         }
     }
 }

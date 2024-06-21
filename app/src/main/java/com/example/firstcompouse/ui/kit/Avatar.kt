@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,8 +50,7 @@ fun AvatarWithImage(
                     BorderStroke(
                         2.dp,
                         if (isSelected) Gradient01 else Brush.linearGradient(colors = listOf(Color.Transparent))
-                    ),
-                    RoundedCornerShape(18.dp)
+                    ), RoundedCornerShape(18.dp)
                 )
                 .background(Color.Transparent)
                 .padding(4.dp)
@@ -69,6 +69,33 @@ fun AvatarWithImage(
 }
 
 @Composable
+fun SimpleAvatar(
+    imageResId: Int,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
+    ) {
+        Box(
+            modifier = Modifier
+                .size(56.dp)
+                .background(Color.Transparent)
+                .padding(4.dp)
+        ) {
+            Image(
+                painter = painterResource(id = imageResId),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(16.dp))
+            )
+        }
+    }
+}
+
+@Composable
 fun AvatarWithAddIcon(name: String, modifier: Modifier = Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -80,8 +107,7 @@ fun AvatarWithAddIcon(name: String, modifier: Modifier = Modifier) {
                 .size(56.dp)
                 .clip(RoundedCornerShape(18.dp))
                 .border(
-                    BorderStroke(2.dp, NeutralDisabled),
-                    RoundedCornerShape(18.dp)
+                    BorderStroke(2.dp, NeutralDisabled), RoundedCornerShape(18.dp)
                 )
                 .background(Color.Transparent)
                 .padding(4.dp)
@@ -105,8 +131,7 @@ fun AvatarWithAddIcon(name: String, modifier: Modifier = Modifier) {
 fun AvatarRow() {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         AvatarWithAddIcon(name = "Вы")
@@ -115,6 +140,7 @@ fun AvatarRow() {
             name = "Вы",
             isSelected = true
         )
+        SimpleAvatar(imageResId = R.drawable.events_avatar_mokk)
     }
 }
 

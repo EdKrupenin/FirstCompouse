@@ -12,7 +12,7 @@ import com.example.firstcompouse.ui.theme.Typography
 
 @Composable
 fun TypographyScreen() {
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column {
         Text(text = "Typography", style = Typography.titleLarge)
         Spacer(modifier = Modifier.height(16.dp))
 
