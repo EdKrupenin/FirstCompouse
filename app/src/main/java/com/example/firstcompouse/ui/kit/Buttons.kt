@@ -94,7 +94,7 @@ fun CustomButton(
             .clickable(
                 interactionSource = interactionSource,
                 indication = ripple(
-                    color = BrandColorLight
+                    color = BrandColorDark
                 ),
                 onClick = onClick,
                 enabled = enabled,
