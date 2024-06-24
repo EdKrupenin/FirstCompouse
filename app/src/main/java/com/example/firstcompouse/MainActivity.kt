@@ -1,6 +1,7 @@
 package com.example.firstcompouse
 
 import AvatarRow
+import ProfileAvatar
 import SimpleAvatarRow
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -69,9 +71,6 @@ fun MainScreen(modifier: Modifier = Modifier) {
             ChipRow()
         }
         item {
-            AvatarRow()
-        }
-        item {
             SearchBar()
         }
         item{
@@ -80,6 +79,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
             ) {
                 AvatarRow()
                 SimpleAvatarRow(mockAvatars)
+                ProfileAvatar(
+                    imageResId = null, onClick = {}, modifier = Modifier.size(200.dp)
+                )
             }
         }
         item {
