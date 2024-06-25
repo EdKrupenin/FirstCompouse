@@ -1,12 +1,10 @@
 package com.example.firstcompouse.ui.kit
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,25 +19,26 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material3.ripple
-import com.example.firstcompouse.ui.theme.BrandColorDark
-import com.example.firstcompouse.ui.theme.BrandColorDefault
-import com.example.firstcompouse.ui.theme.BrandColorLight
 import com.example.firstcompouse.ui.theme.ButtonColorStateList
+import com.example.firstcompouse.ui.theme.FirstCompouseTheme
+import com.example.firstcompouse.ui.theme.filledButtonColors
+import com.example.firstcompouse.ui.theme.outlinedButtonColors
+import com.example.firstcompouse.ui.theme.textButtonColors
 
 enum class ButtonType {
     PRIMARY, SECONDARY, GHOST
@@ -60,29 +59,18 @@ val allButtons = listOf(
 @Composable
 fun CustomButton(
     onClick: () -> Unit,
+    colors: ButtonColorStateList,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = ButtonDefaults.shape,
-    colors: ButtonColorStateList = ButtonColorStateList(),
+    shape: Shape = MaterialTheme.shapes.large,
     border: Boolean = false,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable RowScope.() -> Unit,
 ) {
-    val isHovered by interactionSource.collectIsHoveredAsState()
-
-    val containerColor by animateColorAsState(
-        targetValue = if (isHovered) colors.rippleContainerColor else colors.containerColor(enabled).value,
-        label = "buttonContainerColorAnimation"
-    )
-    val contentColor by animateColorAsState(
-        targetValue = if (isHovered) colors.rippleContentColor else colors.contentColor(enabled).value,
-        label = "buttonContentColorAnimation"
-    )
-    val borderColor by animateColorAsState(
-        targetValue = if (isHovered) colors.rippleBorderColor else colors.borderColor(enabled).value,
-        label = "buttonBorderColorAnimation"
-    )
+    val containerColor by rememberUpdatedState(colors.containerColor(enabled))
+    val contentColor by rememberUpdatedState(colors.contentColor(enabled))
+    val borderColor by rememberUpdatedState(colors.borderColor(enabled))
 
     Box(
         modifier = modifier
@@ -90,22 +78,22 @@ fun CustomButton(
                 minHeight = ButtonDefaults.MinHeight,
                 minWidth = ButtonDefaults.MinWidth,
             )
+            .padding(PaddingValues(8.dp))
             .clip(shape)
             .clickable(
                 interactionSource = interactionSource,
                 indication = ripple(
-                    color = BrandColorDark
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 ),
                 onClick = onClick,
                 enabled = enabled,
             )
-            .padding(PaddingValues(8.dp))
             .background(containerColor, shape)
             .let { if (border) it.border(BorderStroke(1.5.dp, borderColor), shape) else it },
         propagateMinConstraints = true
     ) {
         CompositionLocalProvider(LocalContentColor provides contentColor) {
-            ProvideTextStyle(value = androidx.compose.material3.MaterialTheme.typography.labelLarge) {
+            ProvideTextStyle(value = MaterialTheme.typography.labelLarge) {
                 Row(
                     Modifier
                         .defaultMinSize(
@@ -132,8 +120,8 @@ fun FilledButton(
 ) {
     CustomButton(
         onClick = onClick,
-        colors = ButtonColorStateList(),
         modifier = modifier,
+        colors = filledButtonColors(),
         enabled = enabled,
         contentPadding = contentPadding,
         interactionSource = interactionSource,
@@ -153,15 +141,7 @@ fun TextButton(
 ) {
     CustomButton(
         onClick = onClick,
-        colors = ButtonColorStateList(
-            containerColor = Color.Transparent,
-            contentColor = BrandColorDefault,
-            rippleContainerColor = Color.Transparent,
-            rippleBorderColor = Color.Transparent,
-            rippleContentColor = BrandColorDark,
-            disabledContainerColor = Color.Transparent,
-            disabledContentColor = BrandColorDefault.copy(alpha = 0.5f)
-        ),
+        colors = textButtonColors(),
         modifier = modifier,
         enabled = enabled,
         contentPadding = contentPadding,
@@ -181,17 +161,7 @@ fun OutlinedButton(
 ) {
     CustomButton(
         onClick = onClick,
-        colors = ButtonColorStateList(
-            containerColor = Color.Transparent,
-            borderColor = BrandColorDefault,
-            contentColor = BrandColorDefault,
-            rippleContainerColor = Color.Transparent,
-            rippleBorderColor = BrandColorDark,
-            rippleContentColor = BrandColorDark,
-            disabledContainerColor = Color.Transparent,
-            disabledBorderColor = BrandColorDefault.copy(alpha = 0.5f),
-            disabledContentColor = BrandColorDefault.copy(alpha = 0.5f)
-        ),
+        colors = outlinedButtonColors(),
         border = true,
         modifier = modifier,
         enabled = enabled,
@@ -214,7 +184,7 @@ fun ButtonGrid() {
                     FilledButton(onClick = {}, enabled = state != "Disabled") {
                         Text(
                             text = "Filled",
-                            fontSize = 16.sp
+                            style = MaterialTheme.typography.bodyLarge
                         )
                     }
                 }
@@ -223,7 +193,7 @@ fun ButtonGrid() {
                     OutlinedButton(onClick = {}, enabled = state != "Disabled") {
                         Text(
                             text = "Outlined",
-                            fontSize = 14.sp
+                            style = MaterialTheme.typography.bodySmall
                         )
                     }
                 }
@@ -232,7 +202,7 @@ fun ButtonGrid() {
                     TextButton(onClick = {}, enabled = state != "Disabled") {
                         Text(
                             text = "Text",
-                            fontSize = 16.sp
+                            style = MaterialTheme.typography.bodyLarge
                         )
                     }
                 }
@@ -244,8 +214,9 @@ fun ButtonGrid() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewButtonGrid() {
-    Column {
-        ButtonGrid()
-
+    FirstCompouseTheme {
+        Column {
+            ButtonGrid()
+        }
     }
 }

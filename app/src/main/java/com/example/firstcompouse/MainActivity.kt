@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,7 +40,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FirstCompouseTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
                     MainScreen(
                         modifier = Modifier.padding(innerPadding)
                     )
@@ -54,6 +57,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface)
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -63,9 +67,6 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 .height(180.dp)) {
                 ButtonGrid()
             }
-        }
-        item {
-            TypographyScreen()
         }
         item {
             ChipRow()
@@ -97,6 +98,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 .height(380.dp)) {
                 PreviewCommunity()
             }
+        }
+        item {
+            TypographyScreen()
         }
     }
 }

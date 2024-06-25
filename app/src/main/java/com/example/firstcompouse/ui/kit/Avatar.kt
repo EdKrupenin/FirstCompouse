@@ -77,33 +77,26 @@ fun SimpleAvatar(
     modifier: Modifier = Modifier,
     isGrouped: Boolean = true,
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+    Box(
         modifier = modifier
-    ) {
-        Box(
-            modifier = Modifier
-                .size(SimpleAvatarSize)
-                .clip(RoundedCornerShape(16.dp))
-                .padding(4.dp)
+            .size(SimpleAvatarSize)
+            .clip(RoundedCornerShape(16.dp))
+            .padding(4.dp)
         ) {
             Image(
                 painter = painterResource(id = imageResId),
-                contentDescription = null, contentScale = ContentScale.Crop,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .border(
                         BorderStroke(
                             2.dp, if (isGrouped) Gradient01 else Brush.linearGradient(
-                                colors = listOf(
-                                    Color.Transparent
-                                )
+                                colors = listOf(Color.Transparent)
                             )
                         ), RoundedCornerShape(14.dp)
                     )
                     .clip(RoundedCornerShape(16.dp))
             )
-        }
     }
 }
 
@@ -123,7 +116,7 @@ fun SimpleAvatarRow(peopleList: List<Subject>) {
                 .align(Alignment.CenterVertically),
             textAlign = TextAlign.Center,
             text = "+ ${peopleList.size - 5}",
-            color = NeutralActive,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyLarge
         )
     }
@@ -169,13 +162,13 @@ fun ProfileAvatar(
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(CircleShape)
-                    .background(BrandColorBG),
+                    .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.human),
                     contentDescription = null,
-                    tint = NeutralActive,
+                    tint = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier
                         .size(iconSize)
                 )
@@ -183,12 +176,12 @@ fun ProfileAvatar(
             FloatingActionButton(
                 onClick = onClick,
                 containerColor = NeutralActive,
-                contentColor = NeutralSecondaryBG,
+                contentColor = MaterialTheme.colorScheme.surface,
                 modifier = Modifier
                     .size(fabSize)
                     .indication(
                         interactionSource, ripple(
-                            color = BrandColorDark
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                     )
                     .align(Alignment.BottomEnd)

@@ -16,15 +16,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.firstcompouse.ui.theme.BrandColorBG
-import com.example.firstcompouse.ui.theme.BrandColorDark
+import com.example.firstcompouse.ui.theme.FirstCompouseTheme
 
 @Composable
 fun Chip(
     text: String,
-    backgroundColor: Color,
-    contentColor: Color,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    backgroundColor: Color = MaterialTheme.colorScheme.background,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
 ) {
     Box(
         modifier = modifier
@@ -33,7 +32,9 @@ fun Chip(
     ) {
         Text(
             text = text,
-            color = contentColor, fontSize = 10.sp
+            color = contentColor,
+            style = MaterialTheme.typography.labelSmall,
+            fontSize = 10.sp
         )
     }
 }
@@ -44,16 +45,16 @@ fun ChipRow() {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Chip(text = "Python", backgroundColor = BrandColorBG, contentColor = BrandColorDark)
-        Chip(text = "Junior", backgroundColor = BrandColorBG, contentColor = BrandColorDark)
-        Chip(text = "Moscow", backgroundColor = BrandColorBG, contentColor = BrandColorDark)
+        Chip(text = "Python")
+        Chip(text = "Junior")
+        Chip(text = "Moscow")
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewChipRow() {
-    MaterialTheme {
+    FirstCompouseTheme {
         Surface {
             ChipRow()
         }

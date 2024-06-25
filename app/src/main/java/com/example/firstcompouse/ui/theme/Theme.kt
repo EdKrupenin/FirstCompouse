@@ -25,43 +25,54 @@ import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-private val DarkColorScheme = darkColorScheme(
+val DarkColors = darkColorScheme(
     primary = BrandColorDarkMode,
-    secondary = BrandColorLight,
-    tertiary = NeutralActive
+    onPrimary = NeutralWhite,
+    primaryContainer = BrandColorLight,
+    onPrimaryContainer = BrandColorDark,
+    secondary = NeutralDark,
+    onSecondary = NeutralWhite,
+    secondaryContainer = NeutralActive,
+    onSecondaryContainer = NeutralDark,
+    background = NeutralDark,
+    onBackground = NeutralWhite,
+    surface = NeutralBody,
+    onSurface = NeutralWhite,
+    error = AccentDanger,
+    onError = NeutralWhite
 )
 
-private val LightColorScheme = lightColorScheme(
+val LightColors = lightColorScheme(
     primary = BrandColorDefault,
-    secondary = BrandColorLight,
-    tertiary = NeutralDark
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    onPrimary = NeutralWhite,
+    primaryContainer = BrandColorLight,
+    onPrimaryContainer = BrandColorDark,
+    secondary = NeutralActive,
+    onSecondary = NeutralWhite,
+    secondaryContainer = NeutralSecondaryBG,
+    onSecondaryContainer = NeutralDark,
+    background = BrandColorBG,
+    onBackground = NeutralActive,
+    surface = NeutralSecondaryBG,
+    onSurface = NeutralActive,
+    error = AccentDanger,
+    onError = NeutralWhite
 )
-
 
 @Composable
 fun FirstCompouseTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        dynamicColor -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> DarkColors
+        else -> LightColors
     }
 
     MaterialTheme(

@@ -1,8 +1,7 @@
 package com.example.firstcompouse.ui.theme
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -46,28 +45,86 @@ val Gradient02 = Brush.linearGradient(
 )
 
 data class ButtonColorStateList(
-    val containerColor: Color = BrandColorDefault,
-    val borderColor: Color = Color.Transparent,
-    val contentColor: Color = NeutralSecondaryBG,
-    val rippleContainerColor: Color = BrandColorDark,
-    val rippleBorderColor: Color = Color.Transparent,
-    val rippleContentColor: Color = NeutralSecondaryBG,
-    val disabledContainerColor: Color = BrandColorDefault.copy(alpha = 0.5f),
-    val disabledBorderColor: Color = Color.Transparent,
-    val disabledContentColor: Color = NeutralSecondaryBG,
-) {
-    @Composable
-    internal fun containerColor(enabled: Boolean): State<Color> {
-        return rememberUpdatedState(if (enabled) containerColor else disabledContainerColor)
-    }
+    val containerColor: @Composable (Boolean) -> Color,
+    val borderColor: @Composable (Boolean) -> Color,
+    val contentColor: @Composable (Boolean) -> Color,
+    val rippleContainerColor: @Composable (Boolean) -> Color,
+    val rippleBorderColor: @Composable (Boolean) -> Color,
+    val rippleContentColor: @Composable (Boolean) -> Color,
+)
 
-    @Composable
-    internal fun contentColor(enabled: Boolean): State<Color> {
-        return rememberUpdatedState(if (enabled) contentColor else disabledContentColor)
-    }
+@Composable
+fun filledButtonColors(): ButtonColorStateList {
+    return ButtonColorStateList(
+        containerColor = { enabled ->
+            if (enabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary.copy(
+                alpha = 0.5f
+            )
+        },
+        borderColor = { enabled -> if (enabled) Color.Transparent else Color.Transparent },
+        contentColor = { enabled ->
+            if (enabled) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onPrimary.copy(
+                alpha = 0.5f
+            )
+        },
+        rippleContainerColor = { enabled ->
+            if (enabled) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                alpha = 0.5f
+            )
+        },
+        rippleBorderColor = { enabled -> if (enabled) Color.Transparent else Color.Transparent },
+        rippleContentColor = { enabled ->
+            if (enabled) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onPrimary.copy(
+                alpha = 0.5f
+            )
+        }
+    )
+}
 
-    @Composable
-    internal fun borderColor(enabled: Boolean): State<Color> {
-        return rememberUpdatedState(if (enabled) borderColor else disabledBorderColor)
-    }
+@Composable
+fun textButtonColors(): ButtonColorStateList {
+    return ButtonColorStateList(
+        containerColor = { Color.Transparent },
+        borderColor = { Color.Transparent },
+        contentColor = { enabled ->
+            if (enabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary.copy(
+                alpha = 0.5f
+            )
+        },
+        rippleContainerColor = { Color.Transparent },
+        rippleBorderColor = { Color.Transparent },
+        rippleContentColor = { enabled ->
+            if (enabled) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                alpha = 0.5f
+            )
+        }
+    )
+}
+
+@Composable
+fun outlinedButtonColors(): ButtonColorStateList {
+    return ButtonColorStateList(
+        containerColor = { Color.Transparent },
+        borderColor = { enabled ->
+            if (enabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary.copy(
+                alpha = 0.5f
+            )
+        },
+        contentColor = { enabled ->
+            if (enabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary.copy(
+                alpha = 0.5f
+            )
+        },
+        rippleContainerColor = { Color.Transparent },
+        rippleBorderColor = { enabled ->
+            if (enabled) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                alpha = 0.5f
+            )
+        },
+        rippleContentColor = { enabled ->
+            if (enabled) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                alpha = 0.5f
+            )
+        }
+    )
 }
