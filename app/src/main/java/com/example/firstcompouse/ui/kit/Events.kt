@@ -29,12 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material3.ripple
 import com.example.firstcompouse.R
-import com.example.firstcompouse.ui.theme.BrandColorBG
-import com.example.firstcompouse.ui.theme.BrandColorDark
-import com.example.firstcompouse.ui.theme.BrandColorLight
-import com.example.firstcompouse.ui.theme.NeutralActive
-import com.example.firstcompouse.ui.theme.NeutralLine
-import com.example.firstcompouse.ui.theme.NeutralWeak
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -60,15 +54,13 @@ val mockEvents = listOf(
         date = Calendar.getInstance().time,
         city = "St. Petersburg",
         chips = listOf("Python", "Junior", "Moscow")
-    ),
-    Event(
+    ), Event(
         title = "Design review",
         eventState = EventState.FUTURE,
         date = Calendar.getInstance().time,
         city = "New York",
         chips = listOf("Design", "Senior", "Remote")
-    ),
-    Event(
+    ), Event(
         title = "QA session",
         eventState = EventState.ENDED,
         date = Calendar.getInstance().time,
@@ -92,7 +84,7 @@ fun Events(
             .clickable(
                 interactionSource = interactionSource,
                 indication = ripple(
-                    color = BrandColorLight,
+                    color = MaterialTheme.colorScheme.primaryContainer,
                 ),
                 onClick = onClick,
             )
@@ -128,7 +120,7 @@ fun EventsTitle(
             text = title,
             style = MaterialTheme.typography.bodyLarge,
             fontSize = 14.sp,
-            color = NeutralActive,
+            color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Start,
             modifier = Modifier.weight(1f)
         )
@@ -136,7 +128,7 @@ fun EventsTitle(
             text = eventState.name,
             fontSize = 10.sp,
             style = MaterialTheme.typography.labelMedium,
-            color = NeutralWeak,
+            color = MaterialTheme.colorScheme.outlineVariant,
             textAlign = TextAlign.End,
             modifier = Modifier.padding(end = 4.dp)
         )
@@ -154,7 +146,7 @@ fun EventsDate(
     Text(
         text = "$formattedDate — $city",
         style = MaterialTheme.typography.labelLarge,
-        color = NeutralWeak,
+        color = MaterialTheme.colorScheme.outlineVariant,
         fontSize = 12.sp,
         textAlign = TextAlign.Left,
         modifier = Modifier
@@ -174,7 +166,11 @@ fun EventsChip(
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         chipList.forEach { chip ->
-            Chip(text = chip, backgroundColor = BrandColorBG, contentColor = BrandColorDark)
+            Chip(
+                text = chip,
+                backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }
@@ -187,18 +183,21 @@ fun PreviewEvents() {
 
 @Composable
 fun EventsList(
-    events: List<Event>,
-    onClick: () -> Unit
+    events: List<Event>, onClick: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
-        itemsIndexed(events) { index,event ->
+        itemsIndexed(events) { index, event ->
             Events(event = event, onClick = onClick)
             if (index < events.size - 1) {
-                Divider(color = NeutralLine, thickness = 1.dp, modifier = Modifier.padding(vertical = 12.dp))
+                Divider(
+                    color = MaterialTheme.colorScheme.outline,
+                    thickness = 1.dp,
+                    modifier = Modifier.padding(vertical = 12.dp)
+                )
             }
         }
     }

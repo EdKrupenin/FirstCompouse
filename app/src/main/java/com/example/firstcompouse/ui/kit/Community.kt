@@ -30,10 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material3.ripple
 import com.example.firstcompouse.R
-import com.example.firstcompouse.ui.theme.BrandColorLight
-import com.example.firstcompouse.ui.theme.NeutralActive
-import com.example.firstcompouse.ui.theme.NeutralLine
-import com.example.firstcompouse.ui.theme.NeutralWeak
 
 data class Community(
     val name: String,
@@ -48,21 +44,22 @@ val mockCommunities = listOf(
     Community(
         name = "Design",
 
-    ),
+        ),
     Community(
         name = "QA",
 
-    )
+        )
 )
 
 @Composable
 fun Communities(
     community: Community,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .defaultMinSize(
                 minWidth = 355.dp, minHeight = 74.dp
             )
@@ -70,7 +67,7 @@ fun Communities(
             .clickable(
                 interactionSource = interactionSource,
                 indication = ripple(
-                    color = BrandColorLight,
+                    color = MaterialTheme.colorScheme.primaryContainer,
                 ),
                 onClick = onClick,
             )
@@ -89,7 +86,7 @@ fun CommunityDescription(community: Community) {
             text = community.name,
             style = MaterialTheme.typography.bodyLarge,
             fontSize = 14.sp,
-            color = NeutralActive,
+            color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Start,
             modifier = Modifier
                 .fillMaxWidth()
@@ -98,7 +95,7 @@ fun CommunityDescription(community: Community) {
         Text(
             text = "${community.quantity} ${stringResource(R.string.community_description)}",
             style = MaterialTheme.typography.labelLarge,
-            color = NeutralWeak,
+            color = MaterialTheme.colorScheme.outlineVariant,
             fontSize = 12.sp,
             textAlign = TextAlign.Left,
             modifier = Modifier
@@ -127,7 +124,11 @@ fun CommunityList(
         itemsIndexed(communities) { index, community ->
             Communities(community = community, onClick = onClick)
             if (index < communities.size - 1) {
-                Divider(color = NeutralLine, thickness = 1.dp, modifier = Modifier.padding(vertical = 12.dp))
+                Divider(
+                    color = MaterialTheme.colorScheme.outline,
+                    thickness = 1.dp,
+                    modifier = Modifier.padding(vertical = 12.dp)
+                )
             }
         }
     }

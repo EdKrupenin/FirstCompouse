@@ -16,8 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -34,36 +32,34 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.wear.compose.material3.ripple
 import com.example.firstcompouse.R
-import com.example.firstcompouse.ui.theme.BrandColorBG
-import com.example.firstcompouse.ui.theme.BrandColorDark
+import com.example.firstcompouse.ui.theme.FirstCompouseTheme
 import com.example.firstcompouse.ui.theme.Gradient01
-import com.example.firstcompouse.ui.theme.NeutralActive
-import com.example.firstcompouse.ui.theme.NeutralSecondaryBG
 
-data class Subject(
+data class SubjectData(
     val avatar: Int,
     val isOnLine: Boolean,
 )
 
 val mockAvatars = listOf(
-    Subject(
+    SubjectData(
         avatar = R.drawable.events_avatar_mokk,
         isOnLine = true,
-    ), Subject(
+    ), SubjectData(
         avatar = R.drawable.events_avatar_mokk,
         isOnLine = true,
-    ), Subject(
+    ), SubjectData(
         avatar = R.drawable.events_avatar_mokk,
         isOnLine = true,
-    ), Subject(
+    ), SubjectData(
         avatar = R.drawable.events_avatar_mokk,
         isOnLine = true,
-    ), Subject(
+    ), SubjectData(
         avatar = R.drawable.events_avatar_mokk,
         isOnLine = true,
-    ), Subject(
+    ), SubjectData(
         avatar = R.drawable.events_avatar_mokk,
         isOnLine = true,
     )
@@ -80,35 +76,40 @@ fun SimpleAvatar(
     Box(
         modifier = modifier
             .size(SimpleAvatarSize)
-            .clip(RoundedCornerShape(16.dp))
             .padding(4.dp)
-        ) {
-            Image(
-                painter = painterResource(id = imageResId),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .border(
-                        BorderStroke(
-                            2.dp, if (isGrouped) Gradient01 else Brush.linearGradient(
-                                colors = listOf(Color.Transparent)
-                            )
-                        ), RoundedCornerShape(14.dp)
-                    )
-                    .clip(RoundedCornerShape(16.dp))
-            )
+            .clip(MaterialTheme.shapes.large)
+    ) {
+        Image(
+            painter = painterResource(id = imageResId),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(MaterialTheme.shapes.large)
+                .border(
+                    BorderStroke(
+                        2.dp, if (isGrouped) Gradient01 else Brush.linearGradient(
+                            colors = listOf(Color.Transparent)
+                        )
+                    ), MaterialTheme.shapes.large
+                )
+        )
     }
 }
 
 @Composable
-fun SimpleAvatarRow(peopleList: List<Subject>) {
+fun SimpleAvatarRow(peopleList: List<SubjectData>) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(
             if (peopleList.size > 5) (-SimpleAvatarSize / 2) else 8.dp
         )
     ) {
-        peopleList.take(5).forEach { human ->
-            SimpleAvatar(human.avatar, isGrouped = true)
+        peopleList.take(5).forEachIndexed { index, human ->
+            SimpleAvatar(
+                human.avatar,
+                isGrouped = true,
+                modifier = Modifier.zIndex(5 / index.toFloat())
+            )
         }
         if (peopleList.size > 5) Text(
             modifier = Modifier
@@ -146,22 +147,22 @@ fun ProfileAvatar(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxSize()
+                    .clip(MaterialTheme.shapes.extraLarge)
                     .clickable(
                         interactionSource = interactionSource,
                         indication = ripple(
-                            color = BrandColorDark,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
                             radius = iconSize,
                             bounded = false,
                         ),
                         onClick = onClick
                     )
-                    .clip(CircleShape)
             )
         } else {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .clip(CircleShape)
+                    .clip(MaterialTheme.shapes.extraLarge)
                     .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
@@ -175,7 +176,7 @@ fun ProfileAvatar(
             }
             FloatingActionButton(
                 onClick = onClick,
-                containerColor = NeutralActive,
+                containerColor = MaterialTheme.colorScheme.onBackground,
                 contentColor = MaterialTheme.colorScheme.surface,
                 modifier = Modifier
                     .size(fabSize)
@@ -219,7 +220,7 @@ fun AvatarRow() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewAvatarRow() {
-    MaterialTheme {
+    FirstCompouseTheme {
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {

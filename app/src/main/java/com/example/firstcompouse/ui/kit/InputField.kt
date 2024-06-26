@@ -25,14 +25,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.firstcompouse.ui.theme.NeutralActive
-import com.example.firstcompouse.ui.theme.NeutralSecondaryBG
 
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
-    backgroundColor: Color = NeutralSecondaryBG,
-    contentColor: Color = NeutralActive,
+    backgroundColor: Color = MaterialTheme.colorScheme.surface,
+    contentColor: Color = MaterialTheme.colorScheme.onSurface,
 ) {
     val searchText = remember { mutableStateOf(TextFieldValue("")) }
 

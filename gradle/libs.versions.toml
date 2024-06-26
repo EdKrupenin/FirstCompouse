@@ -1,15 +1,15 @@
 [versions]
-agp = "8.4.0"
+agp = "8.5.0"
 kotlin = "1.9.0"
-coreKtx = "1.13.1"
+coreKtx = "1.10.1"  # Понижаем до стабильной версии
 junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.8.0"
-activityCompose = "1.9.0"
-composeBom = "2023.08.00"
-animation = "1.6.8"
-wear = "1.0.0-alpha23"
+junitVersion = "1.1.5"  # Понижаем до стабильной версии
+espressoCore = "3.5.1"  # Понижаем до стабильной версии
+lifecycleRuntimeKtx = "2.6.1"  # Понижаем до стабильной версии
+activityCompose = "1.7.2"  # Понижаем до стабильной версии
+composeBom = "2023.05.01"  # Понижаем до стабильной версии
+animation = "1.3.3"  # Понижаем до стабильной версии
+wear = "1.0.0-alpha20"  # Понижаем до стабильной версии
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

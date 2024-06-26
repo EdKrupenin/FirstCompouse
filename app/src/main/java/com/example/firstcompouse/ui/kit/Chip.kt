@@ -22,8 +22,8 @@ import com.example.firstcompouse.ui.theme.FirstCompouseTheme
 fun Chip(
     text: String,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = MaterialTheme.colorScheme.background,
-    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
 ) {
     Box(
         modifier = modifier
