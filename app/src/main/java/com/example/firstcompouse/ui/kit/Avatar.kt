@@ -127,7 +127,7 @@ fun SimpleAvatarRow(peopleList: List<SubjectData>) {
 fun ProfileAvatar(
     modifier: Modifier = Modifier,
     imageResId: Int? = null,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     BoxWithConstraints(
@@ -155,7 +155,7 @@ fun ProfileAvatar(
                             radius = iconSize,
                             bounded = false,
                         ),
-                        onClick = onClick
+                        onClick = { onClick?.invoke() }
                     )
             )
         } else {
@@ -163,7 +163,7 @@ fun ProfileAvatar(
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(MaterialTheme.shapes.extraLarge)
-                    .background(MaterialTheme.colorScheme.background),
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -174,25 +174,27 @@ fun ProfileAvatar(
                         .size(iconSize)
                 )
             }
-            FloatingActionButton(
-                onClick = onClick,
-                containerColor = MaterialTheme.colorScheme.onBackground,
-                contentColor = MaterialTheme.colorScheme.surface,
-                modifier = Modifier
-                    .size(fabSize)
-                    .indication(
-                        interactionSource, ripple(
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
+            if (onClick != null) {
+                FloatingActionButton(
+                    onClick = onClick,
+                    containerColor = MaterialTheme.colorScheme.onBackground,
+                    contentColor = MaterialTheme.colorScheme.surface,
+                    modifier = Modifier
+                        .size(fabSize)
+                        .indication(
+                            interactionSource, ripple(
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
                         )
+                        .align(Alignment.BottomEnd)
+                        .offset(x = (-fabOffset.value).dp, y = (-fabOffset.value).dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_add_24),
+                        contentDescription = "Add",
+                        modifier = Modifier.size(fabSize)
                     )
-                    .align(Alignment.BottomEnd)
-                    .offset(x = (-fabOffset.value).dp, y = (-fabOffset.value).dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.baseline_add_24),
-                    contentDescription = "Add",
-                    modifier = Modifier.size(fabSize)
-                )
+                }
             }
         }
     }

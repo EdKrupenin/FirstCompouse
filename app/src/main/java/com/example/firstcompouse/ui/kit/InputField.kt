@@ -1,77 +1,93 @@
 package com.example.firstcompouse.ui.kit
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.firstcompouse.R
+import com.example.firstcompouse.ui.theme.FirstCompouseTheme
 
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
-    contentColor: Color = MaterialTheme.colorScheme.onSurface,
+    activeContentColor: Color = MaterialTheme.colorScheme.onSurface,
+    contentColor: Color = MaterialTheme.colorScheme.outlineVariant,
+    onSearch: (String) -> Unit
 ) {
-    val searchText = remember { mutableStateOf(TextFieldValue("")) }
+    var searchText by rememberSaveable { mutableStateOf("") }
+    var isActive by remember { mutableStateOf(false) }
 
-    Row(
+    BasicTextField(value = searchText,
+        onValueChange = {
+            searchText = it
+            onSearch(it)
+        },
+        singleLine = true,
+        textStyle = MaterialTheme.typography.bodyMedium.copy(color = activeContentColor),
+        decorationBox = { innerTextField ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .defaultMinSize(minHeight = 36.dp)
+                    .background(backgroundColor)
+                    .clip(MaterialTheme.shapes.small),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Search,
+                    contentDescription = "Search",
+                    tint = if (isActive) activeContentColor else contentColor,
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+                Box(modifier = Modifier.weight(1f)) {
+                    if (searchText.isEmpty()) {
+                        Text(
+                            stringResource(id = R.string.search_placeholder),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = contentColor
+                        )
+                    }
+                    innerTextField()
+                }
+            }
+        },
         modifier = modifier
-            .fillMaxWidth()
-            .background(color = backgroundColor, shape = RoundedCornerShape(4.dp))
-    ) {
-        Icon(
-            imageVector = Icons.Default.Search,
-            contentDescription = "Search Icon",
-            tint = contentColor,
-            modifier = Modifier
-                .size(24.dp)
-                .align(Alignment.CenterVertically)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        TextField(
-            value = searchText.value,
-            onValueChange = { searchText.value = it },
-            placeholder = { Text(text = "Search", color = contentColor) },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-                cursorColor = contentColor,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-            ),
-        )
-    }
+            .onFocusChanged { focusState ->
+                isActive = focusState.isFocused
+            }
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewSearchBar() {
-    MaterialTheme {
-        Surface {
-            SearchBar(
-                modifier = Modifier.padding(8.dp),
-            )
+    FirstCompouseTheme {
+        Column {
+            SearchBar() {}
         }
     }
 }
